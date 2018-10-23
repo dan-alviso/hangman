@@ -1,6 +1,6 @@
 const puzzleEl = document.querySelector("#puzzle");
 const guessesEl = document.querySelector("#guesses");
-const game1 = new Hangman("Cat", 2);
+let game1;
 
 const render = () => {
   puzzleEl.innerHTML = "";
@@ -13,7 +13,7 @@ const render = () => {
   });
 };
 
-window.addEventListener("keypress", function(e) {
+window.addEventListener("keypress", e => {
   const guess = String.fromCharCode(e.charCode);
   if (guess.match(/^[a-z0-9 ]$/i)) {
     game1.makeGuess(guess);
@@ -21,4 +21,12 @@ window.addEventListener("keypress", function(e) {
   }
 });
 
-render();
+const startGame = async () => {
+  const puzzle = await getPuzzle("2");
+  game1 = new Hangman(puzzle, 5);
+  render();
+};
+
+document.querySelector("#reset").addEventListener("click", startGame);
+
+startGame();
